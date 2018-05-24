@@ -1,11 +1,11 @@
 # centos-ssh commands
 
+Construire l'image
 ```
 make build
 ```
 
-Si fichier .ssh/authorized_keys embarqué dans l'image
-
+Si fichier .ssh/authorized_keys embarqué dans l'image (Ancienne version)
 ```
 docker container run --rm --detach --name sshd clevandowski/centos-sshd
 ```
@@ -13,14 +13,21 @@ docker container run --rm --detach --name sshd clevandowski/centos-sshd
 
 Si fichier .ssh/authorized_keys monté dans le container
 (Nécessite le répertoire ssh en ```chmod 700``` et le fichier ssh/authorized_keys en ```chmod 600```)
-
 ```
 docker container run --rm --detach --name sshd -v ssh:/home/guest/.ssh clevandowski/centos-sshd
 ```
 
-
+Se logguer au container (vérifier son ip avec ```docker container inspect sshd```)
+```
 ssh -i .ssh/id_rsa guest@172.17.0.2
+```
 
+Se lancer un bash via ```docker exec```
+```
 docker exec -ti sshd /bin/bash
+```
 
+Arrêt
+```
 docker container stop sshd
+```
