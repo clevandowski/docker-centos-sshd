@@ -32,6 +32,11 @@ Arrêt
 docker container stop sshd
 ```
 
+Récupérer le port exposé
+```
+$ minikube -n app-cluster service sshd --url
+http://192.168.99.100:32509
+```
 
 Se connecter en ssh au service dans kubernetes
 ```

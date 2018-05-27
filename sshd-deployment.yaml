@@ -14,6 +14,10 @@ spec:
     spec:
       containers:
       - image: clevandowski/centos-sshd
+        lifecycle:
+          postStart:
+            exec:
+              command: ["/bin/sh", "-c", "cp /home/guest/.ssh/authorized_keys_ /home/guest/.ssh/authorized_keys && chown guest:guest /home/guest/.ssh/authorized_keys && chmod 600 /home/guest/.ssh/authorized_keys"]
         imagePullPolicy: Always
         name: sshd
         ports:
@@ -27,16 +31,12 @@ spec:
             memory: "512Mi"
             cpu: "200"
         volumeMounts:
-        - name: authorized-keys
-          mountPath: /opt/sshd
-          # subPath: authorized-keys
-          # readOnly: false
+        - name: ssh-authorized-keys
+          mountPath: /home/guest/.ssh/authorized_keys_
+          subPath: authorized_keys_
 
       volumes:
-      - name: authorized-keys
+      - name: ssh-authorized-keys
         configMap:
           name: sshd
-          defaultMode: 0600
-          items:
-          - key: authorized_keys
-            path: authorized_keys
+          defaultMode: 0644
