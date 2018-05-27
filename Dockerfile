@@ -16,6 +16,8 @@ RUN mkdir -p /home/guest/.ssh && chown guest. /home/guest/.ssh && chmod 700 /hom
 # RUN chown guest. /home/guest/.ssh/authorized_keys && chmod 600 /home/guest/.ssh/authorized_keys
 VOLUME /home/guest/.ssh
 
+RUN sed -i 's|^AuthorizedKeysFile.*$|AuthorizedKeysFile /opt/sshd/authorized_keys|' /etc/ssh/sshd_config
+
 # RUN echo "root:jump" | chpasswd
 # RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 # RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd

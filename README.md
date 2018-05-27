@@ -31,3 +31,24 @@ Arrêt
 ```
 docker container stop sshd
 ```
+
+
+Se connecter en ssh au service dans kubernetes
+```
+ssh -i .ssh/id_rsa guest@192.168.99.100 -p 32509
+```
+
+Se connecter sur le pod
+```
+kubectl -n app-cluster exec -ti $(kubectl -n app-cluster get pods | grep sshd | awk '{ print $1 }') /bin/bash
+```
+
+Voir le status du pod
+```
+watch kubectl -n app-cluster get pods
+```
+
+Appliquer les changements dans le déploiement
+```
+kubectl -n app-cluster apply -f sshd-deployment.yaml
+```

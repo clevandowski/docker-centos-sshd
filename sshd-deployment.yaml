@@ -1,0 +1,42 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: sshd
+  labels:
+    app: sshd
+spec:
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: sshd
+    spec:
+      containers:
+      - image: clevandowski/centos-sshd
+        imagePullPolicy: Always
+        name: sshd
+        ports:
+        - containerPort: 22
+          name: resanet-tp-00
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "200"
+        volumeMounts:
+        - name: authorized-keys
+          mountPath: /opt/sshd
+          # subPath: authorized-keys
+          # readOnly: false
+
+      volumes:
+      - name: authorized-keys
+        configMap:
+          name: sshd
+          defaultMode: 0600
+          items:
+          - key: authorized_keys
+            path: authorized_keys
